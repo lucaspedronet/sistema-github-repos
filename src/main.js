@@ -29,12 +29,14 @@ class App {
         owner: { avatar_url, html_url }
       } = resposta.data;
 
-      this.repository.push({
-        name,
-        description,
-        avatar_url,
-        html_url
-      });
+      this.repository.push(
+        Object.freeze({
+          name,
+          description,
+          avatar_url,
+          html_url
+        })
+      );
     } catch (error) {
       console.warn(error);
     }
