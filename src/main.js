@@ -12,6 +12,15 @@ class App {
     this.formEl.onsubmit = event => this.addRepository(event);
   }
 
+  isLoading(load = true) {
+    if (load) {
+      return document
+        .getElementById("loading")
+        .appendChild(document.createTextNode("Carregando..."));
+    }
+    document.getElementById("loading").remove();
+  }
+
   /**
    * @método addRepositry()
    * @document = { autohr: Lucas Pedro }
@@ -22,6 +31,7 @@ class App {
     const respo = this.inpuEl.value;
 
     try {
+      this.isLoading();
       const resposta = await api.get(`/repos/${respo}`);
       const {
         name,
@@ -40,6 +50,7 @@ class App {
     } catch (error) {
       console.warn(error);
     }
+    this.isLoading(false);
 
     this.render();
   }
