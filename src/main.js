@@ -5,7 +5,7 @@ class App {
     this.repository = [];
     this.formEl = document.getElementById("repo-form");
     this.listEl = document.getElementById("repo-list");
-    this.inpuEl = document.getElementById("input");
+    this.inputEl = document.getElementById("input");
     this.registerHandlers();
   }
   registerHandlers() {
@@ -18,17 +18,13 @@ class App {
         .getElementById("loading")
         .appendChild(document.createTextNode("Carregando..."));
     }
-    document.getElementById("loading").remove();
+    document.getElementById("loading").innerHTML = "";
   }
-
-  /**
-   * @método addRepositry()
-   * @document = { autohr: Lucas Pedro }
-   */
 
   async addRepository(event) {
     event.preventDefault();
-    const respo = this.inpuEl.value;
+    const respo = this.inputEl.value;
+    this.inputEl.value = "";
 
     try {
       this.isLoading();
@@ -55,17 +51,23 @@ class App {
     this.render();
   }
 
+  excluirRepository(id) {
+    this.repository.splice(id, 1);
+    this.render();
+  }
+
   /**
    * @método render() resposavel por renderizar a lista de repositórios.
    **/
   render() {
     this.listEl.innerHTML = "";
     this.repository.map(repo => {
-      let liEl = document.createElement("li");
+      let itemEl = document.createElement("li");
       let imgEl = document.createElement("img");
       let strongEl = document.createElement("strong");
       let paragrafEl = document.createElement("p");
       let linkEl = document.createElement("a");
+      let buttonEl = document.createElement("button");
 
       /**
        * @SET_ATRIBUTE {Setando as protiedades de img em imgEl}
@@ -75,14 +77,22 @@ class App {
 
       strongEl.appendChild(document.createTextNode(repo.name));
       paragrafEl.appendChild(document.createTextNode(repo.description));
+
       linkEl.setAttribute("target", "blank");
       linkEl.setAttribute("href", repo.html_url);
       linkEl.appendChild(document.createTextNode("Acessar"));
 
-      liEl.appendChild(imgEl);
-      liEl.appendChild(strongEl);
-      liEl.appendChild(paragrafEl);
-      liEl.appendChild(linkEl);
+      buttonEl.setAttribute("id", this.repository.length);
+      buttonEl.setAttribute("title", "Excluir");
+      buttonEl.appendChild(document.createTextNode("Excluir"));
+
+      buttonEl.onclick = () => this.excluirRepository(repo.id);
+
+      itemEl.appendChild(imgEl);
+      itemEl.appendChild(strongEl);
+      itemEl.appendChild(paragrafEl);
+      itemEl.appendChild(linkEl);
+      itemEl.appendChild(buttonEl);
       this.listEl.appendChild(liEl);
     });
   }
