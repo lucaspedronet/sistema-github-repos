@@ -39,32 +39,3 @@ class App {
 }
 
 new App();
-
-// class App {
-//   constructor(nome = null, idade = null) {
-//     this.nome = nome;
-//     this.idade = idade;
-//   }
-//   getNome() {
-//     return this.nome;
-//   }
-//   getIdade() {
-//     return this.idade;
-//   }
-//   setNome(nome) {
-//     this.nome = nome;
-//   }
-//   setIdade(idade) {
-//     this.idade = idade;
-//   }
-// }
-
-// const p = new App("João Pedo", "27");
-// // console.log(p.nome, p.idade);
-
-// console.log(p.getNome());
-// console.log(p.getIdade());
-// p.setNome("João Pedro");
-// p.setIdade(25);
-// console.log(p.getNome());
-// console.log(p.getIdade());
