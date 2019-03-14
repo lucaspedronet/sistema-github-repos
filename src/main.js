@@ -2,11 +2,12 @@
 
 class App {
   constructor() {
-    this.repository = [];
+    this.repository = JSON.parse(localStorage.getItem("repos")) || [];
     this.formEl = document.getElementById("repo-form");
     this.listEl = document.getElementById("repo-list");
     this.inputEl = document.getElementById("input");
     this.registerHandlers();
+    this.render();
   }
   registerHandlers() {
     this.formEl.onsubmit = event => this.addRepository(event);
@@ -56,6 +57,10 @@ class App {
     this.render();
   }
 
+  save() {
+    localStorage.setItem("repos", JSON.stringify(this.repository));
+  }
+
   /**
    * @método render() resposavel por renderizar a lista de repositórios.
    **/
@@ -68,12 +73,12 @@ class App {
       let paragrafEl = document.createElement("p");
       let linkEl = document.createElement("a");
       let buttonEl = document.createElement("button");
+      let index = this.repository.indexOf(repo);
 
       /**
        * @SET_ATRIBUTE {Setando as protiedades de img em imgEl}
        */
       imgEl.setAttribute("src", repo.avatar_url);
-      imgEl.setAttribute("alt", document.createTextNode(repo.avatar_url));
 
       strongEl.appendChild(document.createTextNode(repo.name));
       paragrafEl.appendChild(document.createTextNode(repo.description));
@@ -82,19 +87,20 @@ class App {
       linkEl.setAttribute("href", repo.html_url);
       linkEl.appendChild(document.createTextNode("Acessar"));
 
-      buttonEl.setAttribute("id", this.repository.length);
+      buttonEl.setAttribute("id", index);
       buttonEl.setAttribute("title", "Excluir");
       buttonEl.appendChild(document.createTextNode("Excluir"));
 
-      buttonEl.onclick = () => this.excluirRepository(repo.id);
+      buttonEl.onclick = () => this.excluirRepository(index);
 
       itemEl.appendChild(imgEl);
       itemEl.appendChild(strongEl);
       itemEl.appendChild(paragrafEl);
       itemEl.appendChild(linkEl);
       itemEl.appendChild(buttonEl);
-      this.listEl.appendChild(liEl);
+      this.listEl.appendChild(itemEl);
     });
+    this.save();
   }
 }
 
